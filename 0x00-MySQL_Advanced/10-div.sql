@@ -1,7 +1,7 @@
 -- function
-
+DELIMITER //
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS INT
+RETURNS FLOAT
 
 BEGIN
     IF b = 0 THEN
@@ -9,3 +9,4 @@ BEGIN
     ELSE RETURN a / b;
     END IF;
 END;
+//
