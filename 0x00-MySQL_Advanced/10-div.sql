@@ -8,4 +8,4 @@ BEGIN
         RETURN 0;
     ELSE RETURN a / b;
     END IF;
-END
+END;
