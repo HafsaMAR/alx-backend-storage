@@ -1,7 +1,7 @@
 -- function
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS FLOAT
+RETURNS INT
 
 BEGIN
     IF b = 0 THEN
