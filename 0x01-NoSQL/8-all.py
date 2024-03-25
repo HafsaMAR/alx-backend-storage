@@ -5,7 +5,7 @@ from pymongo.collection import Collection
 from typing import Iterator
 
 
-def list_all(mongo_collection: Collection) -> Iterator[dict]:
+def list_all(mongo_collection):
     """
     lists all the documents in the collection mongo_collection
     Args:
