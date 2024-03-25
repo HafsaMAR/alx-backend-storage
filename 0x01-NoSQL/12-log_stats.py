@@ -1,41 +1,38 @@
 #!/usr/bin/env python3
+"""log stats"""
 
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://127.0.0.1:27017')
 
-db = client['logs']
-collection = db['nginx']
+def log_stats():
+    "Stats on the logs database"
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    db = client['logs']
+    collection = db['nginx']
 
-num_document = collection.count_documents({})
+    num_document = collection.count_documents({})
 
-print(f"{num_document} logs")
+    print(f"{num_document} logs")
+    print("Methods:")
 
-pipeline = [
-    # Stage 1: Group by method and count occurrences
-    {"$group": {"_id": "$method", "count": {"$sum": 1}}},
+    get = collection.count_documents({"method": "GET"})
+    post = collection.count_documents({"method": "POST"})
+    put = collection.count_documents({"method": "PUT"})
+    patch = collection.count_documents({"method": "PATCH"})
+    delete = collection.count_documents({"method": "DELETE"})
 
-    {"$sort": {"count": -1}}
-]
+    print(f"\tmethod GET: {get}")
+    print(f"\tmethod POST: {post}")
+    print(f"\tmethod PUT: {put}")
+    print(f"\tmethod PATCH: {patch}")
+    print(f"\tmethod DELETE: {delete}")
 
-# Create a set of all possible methods
-all_methods = {"GET", "POST", "PUT", "PATCH", "DELETE"}
+    num_document = collection.count_documents(
+        {"method": "GET", "path": "/status"})
 
-result = collection.aggregate(pipeline)
+    print(f"{num_document} status check")
 
-print("Methods:")
-for method in all_methods:
-    count = 0
-    for document in result:
-        if document["_id"] == method:
-            count = document["count"]
-            break
-    print(f"\tmethod {method}: {count}")
 
-for document in result:
-    print(f"\tmethod {document['_id']}: {document['count']}")
-
-num_document = collection.count_documents({"method": "GET", "path": "/status"})
-
-print(f"{num_document} status check")
+if __name__ == "__main__":
+    log_stats()
