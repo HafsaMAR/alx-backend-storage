@@ -6,7 +6,7 @@ import redis
 import uuid
 from typing import Union
 
-class Cache():
+class Cache:
     """Cache class"""
     def __init__(self) -> None:
         """Initialize Redis client and flush the db"""
@@ -20,3 +20,12 @@ class Cache():
         self._Redis_client.set(key, data)
 
         return key
+
+cache = Cache()
+
+data = b"hello"
+key = cache.store(data)
+print(key)
+
+local_redis = redis.Redis()
+print(local_redis.get(key))
