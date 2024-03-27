@@ -6,6 +6,7 @@ import redis
 import uuid
 from typing import Union, Callable, Optional, Any
 
+
 class Cache:
     """Cache class"""
     def __init__(self) -> None:
