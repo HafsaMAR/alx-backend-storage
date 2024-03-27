@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""documented module"""
 
 from pymongo import MongoClient
 
