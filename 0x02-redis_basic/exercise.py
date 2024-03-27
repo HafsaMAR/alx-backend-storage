@@ -30,8 +30,22 @@ def call_history(method: Callable) -> Callable:
         self._redis.rpush(output_key, output)
 
         return output
-    return wrapper   
+    return wrapper
 
+def replay(method: Callable) -> None:
+    method_name = method.__qualname__
+    input_key = method_name + ":inputs"
+    ouput_key = method_name + ":outputs"
+
+    inputs = cache._redis.lrange(input_key, 0, -1)
+    outputs = cache._redis.lrange(ouput_key, 0, -1)
+
+
+    print(f"{method_name} was called {len(inputs)} times:")
+    for inp, out in zip(inputs, outputs):
+        input = inp.decode('utf-8')
+        output = out.decode('utf-8')
+        print(f"{method_name}{input} -> {output}")
 
 class Cache:
     """Cache class"""
@@ -68,3 +82,12 @@ class Cache:
     def get_int(self, key: str) -> int:
         """Returns the value stored in the redis store as int"""
         return self.get(key,int)
+
+
+cache = Cache()
+
+cache.store("foo")
+cache.store("bar")
+cache.store(42)
+
+replay(cache.store)
