@@ -14,11 +14,9 @@ def top_students(mongo_collection):
     Returns:
         list of dictionaries"""
     pipeline = [
-        {"$unwind": "$scores"},
-        {"$group": {
-            "_id": "$_id",
-            "name": {"$first": "$name"},
-            "averageScore": {"$avg": "$scores.score"}
+        {"$project": {
+            "name": "$name",
+            "averageScore": {"$avg": "$topics.score"}
         }},
         {"$sort": {"averageScore": -1}}
     ]
