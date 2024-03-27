@@ -33,12 +33,13 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 def replay(method: Callable) -> None:
+    """comment"""
     method_name = method.__qualname__
     input_key = method_name + ":inputs"
     ouput_key = method_name + ":outputs"
 
-    inputs = cache._redis.lrange(input_key, 0, -1)
-    outputs = cache._redis.lrange(ouput_key, 0, -1)
+    inputs = method.__self__._redis.lrange(input_key, 0, -1)
+    outputs = method.__self__._redis.lrange(ouput_key, 0, -1)
 
 
     print(f"{method_name} was called {len(inputs)} times:")
