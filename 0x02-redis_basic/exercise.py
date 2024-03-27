@@ -82,12 +82,3 @@ class Cache:
     def get_int(self, key: str) -> int:
         """Returns the value stored in the redis store as int"""
         return self.get(key,int)
-
-
-cache = Cache()
-
-cache.store("foo")
-cache.store("bar")
-cache.store(42)
-
-replay(cache.store)
