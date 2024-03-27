@@ -20,12 +20,3 @@ class Cache:
         self._Redis_client.set(key, data)
 
         return key
-
-cache = Cache()
-
-data = b"hello"
-key = cache.store(data)
-print(key)
-
-local_redis = redis.Redis()
-print(local_redis.get(key))
